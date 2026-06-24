@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0A1A38;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .gold-badge {
+    @apply inline-block bg-gold-gradient text-navy-dark font-body font-bold text-xs px-3 py-1 rounded-full tracking-wider uppercase;
+  }
+
+  .gold-box {
+    @apply inline-block border-2 border-gold text-gold font-heading tracking-widest px-3 py-1 rounded-lg text-sm;
+    background: rgba(227, 176, 75, 0.08);
+  }
+
+  .gold-box-filled {
+    @apply inline-block bg-gold-gradient text-navy-dark font-heading tracking-widest px-4 py-2 rounded-lg font-bold;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-gold-gradient text-navy-dark font-body font-bold px-6 py-3 rounded-xl
+           hover:scale-105 hover:shadow-[0_0_30px_rgba(227,176,75,0.4)] transition-all duration-300 cursor-pointer;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border-2 border-gold text-gold font-body font-semibold px-6 py-3 rounded-xl
+           hover:bg-gold hover:text-navy-dark transition-all duration-300 cursor-pointer;
+  }
+
+  .section-heading {
+    @apply font-heading text-4xl md:text-6xl lg:text-7xl uppercase tracking-wide leading-none text-white;
+  }
+
+  .card-dark {
+    @apply bg-navy-dark border border-white/5 rounded-2xl overflow-hidden
+           hover:border-gold/30 hover:shadow-[0_8px_40px_rgba(227,176,75,0.1)] transition-all duration-300;
+  }
+
+  .swirl-bg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swirl-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(29, 78, 216, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(227, 176, 75, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 70% at 70% 80%, rgba(29, 78, 216, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #F0CE6E 0%, #E3B04B 50%, #C8901F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Swirl SVG animation */
+@keyframes swirl-rotate {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1.05); }
+}
+
+@keyframes swirl-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+.swirl-element {
+  animation: swirl-rotate 40s linear infinite, swirl-pulse 8s ease-in-out infinite;
+}
+
+.swirl-element-reverse {
+  animation: swirl-rotate 60s linear infinite reverse, swirl-pulse 10s ease-in-out infinite 2s;
+}
+
+/* Noise texture overlay */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #07122A;
+}
+::-webkit-scrollbar-thumb {
+  background: #E3B04B;
+  border-radius: 3px;
+}
+
+/* Episode card play button */
+.play-btn {
+  @apply w-12 h-12 rounded-full flex items-center justify-center bg-gold-gradient
+         hover:scale-110 hover:shadow-[0_0_20px_rgba(227,176,75,0.5)] transition-all duration-300 flex-shrink-0;
+}
+
+/* Platform badge */
+.platform-badge {
+  @apply flex items-center gap-3 bg-navy-dark border border-white/10 rounded-2xl px-5 py-4
+         hover:border-gold/40 hover:bg-navy hover:shadow-[0_4px_20px_rgba(227,176,75,0.08)]
+         transition-all duration-300 cursor-pointer;
+}
