@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DUO Podcast — Vojta a Vašek. Hloubkové rozhovory o aktuálních tématech." />
+  <title>DUO Podcast — Vojta & Vašek</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { DEFAULT: '#0A1A38', dark: '#07122A', deeper: '#040D1E' },
+            gold: { light: '#F0CE6E', DEFAULT: '#E3B04B', dark: '#C8901F' },
+            royal: '#1D4ED8',
+            muted: '#C7CEDA',
+          },
+          fontFamily: {
+            heading: ['Anton', 'Impact', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A1A38; color: #fff; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #07122A; }
+    ::-webkit-scrollbar-thumb { background: #E3B04B; border-radius: 3px; }
+
+    .text-gradient-gold {
+      background: linear-gradient(135deg, #F0CE6E 0%, #E3B04B 50%, #C8901F 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .bg-gold-gradient { background: linear-gradient(135deg, #F0CE6E 0%, #E3B04B 50%, #C8901F 100%); }
+    .gold-box {
+      display: inline-block; border: 2px solid #E3B04B; color: #E3B04B;
+      font-family: 'Anton', sans-serif; letter-spacing: 0.15em; padding: 4px 12px;
+      border-radius: 8px; font-size: 0.75rem; background: rgba(227,176,75,0.08);
+    }
+    .gold-box-filled {
+      display: inline-block; background: linear-gradient(135deg, #F0CE6E, #C8901F);
+      color: #07122A; font-family: 'Anton', sans-serif; letter-spacing: 0.15em;
+      padding: 4px 14px; border-radius: 8px; font-weight: bold;
+    }
+    .gold-badge {
+      display: inline-block; background: linear-gradient(135deg, #F0CE6E, #C8901F);
+      color: #07122A; font-weight: 700; font-size: 0.7rem; padding: 4px 12px;
+      border-radius: 999px; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #F0CE6E 0%, #E3B04B 50%, #C8901F 100%);
+      color: #07122A; font-weight: 700; padding: 14px 28px; border-radius: 12px;
+      cursor: pointer; border: none; transition: all 0.3s; font-family: 'Inter', sans-serif; font-size: 1rem;
+    }
+    .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(227,176,75,0.4); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 2px solid #E3B04B; color: #E3B04B; font-weight: 600;
+      padding: 14px 28px; border-radius: 12px; cursor: pointer; background: transparent;
+      transition: all 0.3s; font-family: 'Inter', sans-serif; font-size: 1rem;
+    }
+    .btn-outline:hover { background: #E3B04B; color: #07122A; }
+    .card-dark {
+      background: #07122A; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+      overflow: hidden; transition: all 0.3s;
+    }
+    .card-dark:hover { border-color: rgba(227,176,75,0.3); box-shadow: 0 8px 40px rgba(227,176,75,0.1); }
+    .section-heading {
+      font-family: 'Anton', Impact, sans-serif; font-size: clamp(2.5rem, 8vw, 5rem);
+      text-transform: uppercase; letter-spacing: 0.05em; line-height: 0.95; color: white;
+    }
+    .swirl-section { position: relative; overflow: hidden; }
+    .swirl-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(29,78,216,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 80% at 80% 20%, rgba(227,176,75,0.06) 0%, transparent 50%),
+                  radial-gradient(ellipse 50% 70% at 70% 80%, rgba(29,78,216,0.08) 0%, transparent 50%);
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes swirl-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .swirl-anim { animation: swirl-spin 40s linear infinite; transform-origin: center; }
+    .swirl-anim-rev { animation: swirl-spin 60s linear infinite reverse; transform-origin: center; }
+
+    /* Nav */
+    nav.scrolled { background: rgba(7,18,42,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(227,176,75,0.1); }
+
+    /* Mobile menu */
+    #mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    #mobile-menu.open { max-height: 400px; }
+
+    /* Episode expand */
+    .stance-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s; opacity: 0; }
+    .stance-panel.open { max-height: 200px; opacity: 1; }
+
+    /* Play button */
+    .play-btn {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #F0CE6E, #C8901F);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none; transition: all 0.3s;
+    }
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(227,176,75,0.5); }
+    .play-btn svg { margin-left: 3px; }
+
+    /* Platform badge */
+    .platform-badge {
+      display: flex; align-items: center; gap: 12px;
+      background: #07122A; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: all 0.3s;
+    }
+    .platform-badge:hover { border-color: rgba(227,176,75,0.4); box-shadow: 0 4px 20px rgba(227,176,75,0.08); }
+
+    input[type=email] {
+      width: 100%; background: #0A1A38; border: 1px solid rgba(255,255,255,0.15);
+      color: white; padding: 14px 16px 14px 42px; border-radius: 12px; outline: none;
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: all 0.3s;
+    }
+    input[type=email]:focus { border-color: rgba(227,176,75,0.5); box-shadow: 0 0 20px rgba(227,176,75,0.1); }
+    input[type=email]::placeholder { color: rgba(199,206,218,0.4); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-5">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+    <button onclick="scrollTo({top:0,behavior:'smooth'})" class="flex items-center gap-3">
+      <svg viewBox="0 0 150 52" height="42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="43" y="10" width="98" height="30" rx="6" stroke="#E3B04B" stroke-width="1.5" fill="rgba(227,176,75,0.08)"/>
+        <rect x="16" y="4" width="12" height="20" rx="6" fill="white"/>
+        <path d="M11 20 C11 28 33 28 33 20" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <line x1="22" y1="27" x2="22" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="16" y1="34" x2="28" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="33" cy="8" r="3.5" fill="#E3B04B"/>
+        <text x="48" y="35" font-family="Anton, Impact, sans-serif" font-size="26" letter-spacing="1" fill="white">DUO</text>
+        <text x="48" y="48" font-family="Inter, sans-serif" font-size="7" letter-spacing="2.5" fill="#C7CEDA" opacity="0.7">PODCAST</text>
+      </svg>
+    </button>
+
+    <ul class="hidden md:flex items-center gap-1">
+      <li><button onclick="scrollToSection('#o-nas')" class="text-muted hover:text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-white/5 transition-all" style="color:#C7CEDA">O nás</button></li>
+      <li><button onclick="scrollToSection('#epizody')" class="text-muted hover:text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-white/5 transition-all" style="color:#C7CEDA">Epizody</button></li>
+      <li><button onclick="scrollToSection('#platformy')" class="text-muted hover:text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-white/5 transition-all" style="color:#C7CEDA">Kde poslouchat</button></li>
+      <li><button onclick="scrollToSection('#kontakt')" class="text-muted hover:text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-white/5 transition-all" style="color:#C7CEDA">Kontakt</button></li>
+    </ul>
+
+    <button onclick="scrollToSection('#platformy')" class="hidden md:flex btn-primary text-sm py-2.5 px-5">
+      Poslouchat <span style="opacity:0.6">→</span>
+    </button>
+
+    <button id="hamburger" onclick="toggleMenu()" class="md:hidden p-2" style="color:rgba(255,255,255,0.8)" aria-label="Menu">
+      <svg id="icon-menu" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="icon-close" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" style="background:rgba(7,18,42,0.98);border-top:1px solid rgba(227,176,75,0.1)">
+    <div class="px-4 py-4 flex flex-col gap-1">
+      <button onclick="scrollToSection('#o-nas');toggleMenu()" class="text-left px-4 py-3 rounded-xl hover:bg-white/5 transition-all" style="color:#C7CEDA;font-family:Inter,sans-serif">O nás</button>
+      <button onclick="scrollToSection('#epizody');toggleMenu()" class="text-left px-4 py-3 rounded-xl hover:bg-white/5 transition-all" style="color:#C7CEDA;font-family:Inter,sans-serif">Epizody</button>
+      <button onclick="scrollToSection('#platformy');toggleMenu()" class="text-left px-4 py-3 rounded-xl hover:bg-white/5 transition-all" style="color:#C7CEDA;font-family:Inter,sans-serif">Kde poslouchat</button>
+      <button onclick="scrollToSection('#kontakt');toggleMenu()" class="text-left px-4 py-3 rounded-xl hover:bg-white/5 transition-all" style="color:#C7CEDA;font-family:Inter,sans-serif">Kontakt</button>
+      <button onclick="scrollToSection('#platformy');toggleMenu()" class="btn-primary mt-2 justify-center">Poslouchat teď</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="swirl-section relative min-h-screen flex flex-col justify-center overflow-hidden" style="background:#0A1A38">
+  <!-- Swirl SVG -->
+  <svg class="swirl-anim absolute pointer-events-none opacity-[0.06]" style="right:-20%;top:-20%;width:120%;height:120%" viewBox="0 0 800 800" fill="none">
+    <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#E3B04B"/></linearGradient></defs>
+    <circle cx="400" cy="400" r="380" stroke="url(#sg1)" stroke-width="1" fill="none" opacity="0.4"/>
+    <circle cx="400" cy="400" r="320" stroke="url(#sg1)" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <circle cx="400" cy="400" r="260" stroke="url(#sg1)" stroke-width="1" fill="none" opacity="0.5"/>
+    <circle cx="400" cy="400" r="200" stroke="url(#sg1)" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <circle cx="400" cy="400" r="140" stroke="url(#sg1)" stroke-width="1" fill="none" opacity="0.6"/>
+    <circle cx="400" cy="400" r="80" stroke="url(#sg1)" stroke-width="1.5" fill="none" opacity="0.7"/>
+    <path d="M400,400 C400,300 500,200 600,250 C700,300 720,430 650,520 C580,610 430,630 340,570 C250,510 210,370 260,270 C310,170 470,130 570,170" stroke="#E3B04B" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M400,400 C380,280 480,160 600,200 C720,240 760,400 700,520 C640,640 480,680 360,630 C240,580 180,430 220,300" stroke="#1D4ED8" stroke-width="1" fill="none" opacity="0.4"/>
+  </svg>
+  <div class="absolute rounded-full pointer-events-none" style="top:25%;right:33%;width:384px;height:384px;background:rgba(29,78,216,0.1);filter:blur(100px)"></div>
+  <div class="absolute rounded-full pointer-events-none" style="bottom:33%;left:25%;width:256px;height:256px;background:rgba(227,176,75,0.05);filter:blur(80px)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-20">
+    <div class="max-w-4xl">
+      <div class="flex flex-wrap items-center gap-3 mb-8">
+        <span class="gold-box-filled" style="font-size:0.7rem;letter-spacing:0.2em">DUO</span>
+        <span style="color:#C7CEDA;font-size:0.875rem;letter-spacing:0.2em;text-transform:uppercase;font-family:Inter,sans-serif">Podcast</span>
+        <span style="width:32px;height:1px;background:rgba(227,176,75,0.4);display:inline-block"></span>
+        <span class="flex items-center gap-1.5">
+          <span class="animate-pulse-dot" style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block"></span>
+          <span style="color:#C7CEDA;font-size:0.75rem;font-family:Inter,sans-serif">Nová epizoda každý týden</span>
+        </span>
+      </div>
+
+      <h1 class="section-heading mb-2">JEDNA <span class="text-gradient-gold">OTÁZKA.</span></h1>
+      <h1 class="section-heading mb-2">DVA <span class="text-gradient-gold">POHLEDY.</span></h1>
+      <h1 class="section-heading mb-8" style="color:rgba(255,255,255,0.3)">HODINA PRAVDY.</h1>
+
+      <p style="color:#C7CEDA;font-size:1.125rem;font-family:Inter,sans-serif;max-width:480px;line-height:1.7;margin-bottom:40px">
+        Vojta a Vašek berou aktuální témata bez cenzury.
+        <strong style="color:white">Skeptik</strong> vs. <strong style="color:#E3B04B">Nadšenec</strong>.
+        Hodina rozhovoru, která stojí za to.
+      </p>
+
+      <div class="flex flex-wrap gap-4 mb-16">
+        <button onclick="scrollToSection('#epizody')" class="btn-primary" style="box-shadow:0 0 40px rgba(227,176,75,0.2)">
+          <svg width="18" height="18" fill="#07122A" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          Poslouchat epizody
+        </button>
+        <button onclick="scrollToSection('#o-nas')" class="btn-outline">O DUO Podcastu</button>
+      </div>
+
+      <!-- Host cards -->
+      <div class="flex flex-col sm:flex-row gap-4" style="max-width:580px">
+        <div class="flex-1 card-dark p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div style="width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;color:white">V</div>
+            <div>
+              <div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">Vojta</div>
+              <span class="gold-box" style="font-size:0.65rem;padding:2px 8px">SKEPTIK</span>
+            </div>
+          </div>
+          <p style="color:#C7CEDA;font-size:0.75rem;font-family:Inter,sans-serif;line-height:1.6;font-style:italic">„Počkej, to zní moc hezky. V praxi to tak nefunguje."</p>
+        </div>
+        <div class="flex-1 p-5" style="border-radius:16px;border:1px solid rgba(227,176,75,0.2);background:rgba(227,176,75,0.03);transition:all 0.3s">
+          <div class="flex items-center gap-3 mb-3">
+            <div style="width:40px;height:40px;border-radius:12px;background:rgba(227,176,75,0.1);border:1px solid rgba(227,176,75,0.3);display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;color:#E3B04B">V</div>
+            <div>
+              <div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">Vašek</div>
+              <span class="gold-box-filled" style="font-size:0.65rem;padding:2px 8px">NADŠENEC</span>
+            </div>
+          </div>
+          <p style="color:#C7CEDA;font-size:0.75rem;font-family:Inter,sans-serif;line-height:1.6;font-style:italic">„Ale je to přesně ta příležitost, na kterou jsme čekali!"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="scrollToSection('#o-nas')" class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 transition-colors duration-300" style="color:rgba(199,206,218,0.6);background:none;border:none;cursor:pointer">
+    <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;font-family:Inter,sans-serif">Epizody</span>
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="animation:float 2s ease-in-out infinite"><polyline points="6,9 12,15 18,9"/></svg>
+  </button>
+  <div class="absolute bottom-0 left-0 right-0" style="height:128px;background:linear-gradient(to top, #07122A, transparent);z-index:5"></div>
+</section>
+
+<!-- ═══════════════════════════ O NÁS ═══════════════════════════ -->
+<section id="o-nas" class="swirl-section relative py-24 md:py-32" style="background:#07122A">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-16">
+      <span class="gold-badge mb-4" style="display:inline-block">O nás</span>
+      <h2 class="section-heading mb-4">DVA LIDI.<br><span class="text-gradient-gold">JEDEN PODCAST.</span></h2>
+      <p style="color:#C7CEDA;font-size:1.125rem;font-family:Inter,sans-serif;max-width:600px;margin:0 auto;line-height:1.7">
+        DUO Podcast vznikl z jednoduché myšlenky: nejzajímavější rozhovory jsou ty, kde dva inteligentní lidé nesouhlasí — a oba mají pravdu.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-8" style="max-width:900px;margin:0 auto">
+      <!-- Vojta -->
+      <div class="card-dark p-8">
+        <div class="flex items-start justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <div style="width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;font-size:1.5rem;color:white">V</div>
+            <div>
+              <h3 style="font-family:Anton,sans-serif;font-size:1.75rem;color:white;letter-spacing:0.05em">Vojta</h3>
+              <span class="gold-box" style="font-size:0.65rem;margin-top:4px;display:inline-block">SKEPTIK</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:1.75rem">12+</div>
+            <div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;max-width:90px;text-align:right;line-height:1.4">Protiargumenty za epizodu</div>
+          </div>
+        </div>
+        <p style="color:#C7CEDA;font-family:Inter,sans-serif;line-height:1.7;margin-bottom:20px">Vojta věří, že každá dobrá idea potřebuje pořádný stress test. Klade nepříjemné otázky, hledá mezery v argumentech a nesouhlasí z principu — dokud ho nepřesvědčíš fakty.</p>
+        <blockquote style="border-left:2px solid rgba(255,255,255,0.3);padding-left:16px;color:rgba(255,255,255,0.7);font-style:italic;font-size:0.875rem;font-family:Inter,sans-serif;line-height:1.6;margin-bottom:20px">
+          „Pokud to nedokážeš vysvětlit jednoduše, nejspíš tomu sám nerozumíš."
+        </blockquote>
+        <div class="flex flex-wrap gap-2">
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Analytický</span>
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Přímý</span>
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Bez iluzí</span>
+        </div>
+      </div>
+
+      <!-- Vašek -->
+      <div class="p-8" style="border-radius:16px;border:1px solid rgba(227,176,75,0.2);background:#07122A;box-shadow:0 0 60px rgba(227,176,75,0.06);transition:all 0.3s">
+        <div class="flex items-start justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <div style="width:64px;height:64px;border-radius:16px;background:rgba(227,176,75,0.1);border:2px solid rgba(227,176,75,0.3);display:flex;align-items:center;justify-content:center;font-family:Anton,sans-serif;font-size:1.5rem;color:#E3B04B">V</div>
+            <div>
+              <h3 style="font-family:Anton,sans-serif;font-size:1.75rem;color:white;letter-spacing:0.05em">Vašek</h3>
+              <span class="gold-box-filled" style="font-size:0.65rem;margin-top:4px;display:inline-block">NADŠENEC</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:1.75rem">24</div>
+            <div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;max-width:90px;text-align:right;line-height:1.4">Nová témata za měsíc</div>
+          </div>
+        </div>
+        <p style="color:#C7CEDA;font-family:Inter,sans-serif;line-height:1.7;margin-bottom:20px">Vašek vidí potenciál tam, kde ostatní vidí riziko. Přináší kontext, příběhy a energii. Přesvědčí tě, že změna je možná — a pak se Vojta postará o to, aby ses zamyslel.</p>
+        <blockquote style="border-left:2px solid #E3B04B;padding-left:16px;color:rgba(227,176,75,0.8);font-style:italic;font-size:0.875rem;font-family:Inter,sans-serif;line-height:1.6;margin-bottom:20px">
+          „Žijeme v nejlepší době v historii lidstva. Tomu věřím každé ráno."
+        </blockquote>
+        <div class="flex flex-wrap gap-2">
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Zvídavý</span>
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Energický</span>
+          <span style="font-size:0.75rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.8);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:4px 12px;border-radius:999px">Optimistický</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-16" style="max-width:700px;margin-top:64px;margin-left:auto;margin-right:auto">
+      <div style="height:1px;background:linear-gradient(to right, transparent, rgba(227,176,75,0.3), transparent);margin-bottom:40px"></div>
+      <p style="font-family:Anton,sans-serif;font-size:clamp(1.25rem,3vw,1.75rem);color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;line-height:1.4">
+        Formát, který věříme: žádné skryté záměry. Jen dva lidi a <span style="color:white">dobrá</span> <span class="text-gradient-gold">otázka.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ EPIZODY ═══════════════════════════ -->
+<section id="epizody" class="swirl-section relative py-24 md:py-32" style="background:#0A1A38">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <span class="gold-badge mb-4" style="display:inline-block">Epizody</span>
+        <h2 class="section-heading">POSLEDNÍ<br><span class="text-gradient-gold">DÍLY</span></h2>
+      </div>
+      <p style="color:#C7CEDA;font-family:Inter,sans-serif;max-width:320px;line-height:1.6">Vyberte si téma. Každý díl stojí sám o sobě.</p>
+    </div>
+
+    <div class="flex flex-col gap-4 mb-10" id="episodes-list">
+      <!-- Episodes injected by JS -->
+    </div>
+
+    <div class="text-center">
+      <button class="btn-outline px-8 py-3.5" style="font-size:0.9rem">Všechny epizody →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ MANIFESTO ═══════════════════════════ -->
+<section class="relative py-24 md:py-32 overflow-hidden" style="background:#0A1A38">
+  <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right, transparent, rgba(227,176,75,0.3), transparent)"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right, transparent, rgba(227,176,75,0.3), transparent)"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+    <div style="width:600px;height:300px;background:rgba(227,176,75,0.05);filter:blur(120px);border-radius:50%"></div>
+  </div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div class="flex items-center justify-center gap-4 mb-10">
+      <div style="height:1px;width:64px;background:rgba(227,176,75,0.4)"></div>
+      <span class="gold-box-filled" style="font-size:0.65rem;letter-spacing:0.3em">MANIFESTO</span>
+      <div style="height:1px;width:64px;background:rgba(227,176,75,0.4)"></div>
+    </div>
+
+    <blockquote class="section-heading mb-8" style="font-size:clamp(1.8rem,6vw,4rem)">
+      „KAŽDÉ DOBRÉ <span class="text-gradient-gold">ROZHODNUTÍ</span><br>
+      ZAČÍNÁ <span style="color:rgba(255,255,255,0.4)">NEPŘÍJEMNOU</span><br>
+      <span class="text-gradient-gold">OTÁZKOU."</span>
+    </blockquote>
+
+    <p style="color:#C7CEDA;font-family:Inter,sans-serif;font-size:1.125rem;max-width:600px;margin:0 auto 48px;line-height:1.7">
+      Nesnažíme se mít pravdu. Snažíme se ji najít. Proto Vojta a Vašek nesouhlasí tak často — ne proto, že by se nevzájemně respektovali, ale proto, že víc perspektiv vede k lepším závěrům.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6" style="max-width:700px;margin:0 auto">
+      <div class="text-center"><div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:2rem;margin-bottom:4px">42+</div><div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:0.1em">Epizod</div></div>
+      <div class="text-center"><div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:2rem;margin-bottom:4px">60min</div><div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:0.1em">Průměrná délka</div></div>
+      <div class="text-center"><div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:2rem;margin-bottom:4px">1×</div><div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:0.1em">Týdně nová epizoda</div></div>
+      <div class="text-center"><div class="text-gradient-gold" style="font-family:Anton,sans-serif;font-size:2rem;margin-bottom:4px">100%</div><div style="color:#C7CEDA;font-size:0.7rem;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:0.1em">Bez reklam v obsahu</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PLATFORMY ═══════════════════════════ -->
+<section id="platformy" class="swirl-section relative py-24 md:py-32" style="background:#07122A">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+      <span class="gold-badge mb-4" style="display:inline-block">Kde poslouchat</span>
+      <h2 class="section-heading mb-4">VAŠE <span class="text-gradient-gold">PLATFORMA,</span><br>NÁŠ PODCAST.</h2>
+      <p style="color:#C7CEDA;font-family:Inter,sans-serif;font-size:1.125rem;max-width:480px;margin:0 auto">DUO Podcast najdete na všech hlavních platformách. Stačí si vybrat tu svou.</p>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4 mb-10">
+      <a href="#" class="platform-badge" style="border-color:rgba(29,185,84,0.25)">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        <div><div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">Spotify</div><div style="color:#E3B04B;font-size:0.65rem;font-family:Inter,sans-serif;text-transform:uppercase;letter-spacing:0.1em">Doporučujeme</div></div>
+      </a>
+      <a href="#" class="platform-badge">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#FC3C44"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">Apple Podcasts</div>
+      </a>
+      <a href="#" class="platform-badge">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        <div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">YouTube</div>
+      </a>
+      <a href="#" class="platform-badge">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#F43E37"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm4.948 12c0-2.73-2.218-4.948-4.948-4.948S7.052 9.27 7.052 12H4.418C4.418 7.8 7.8 4.418 12 4.418S19.582 7.8 19.582 12h-2.634zm-2.634 0c0-1.275-1.039-2.314-2.314-2.314S9.686 10.725 9.686 12H7.052c0-2.73 2.218-4.948 4.948-4.948S16.948 9.27 16.948 12h-2.634z"/></svg>
+        <div style="color:white;font-weight:600;font-size:0.875rem;font-family:Inter,sans-serif">Pocket Casts</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ NEWSLETTER ═══════════════════════════ -->
+<section id="kontakt" class="swirl-section relative py-24 md:py-32" style="background:#07122A">
+  <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
+    <span class="gold-badge mb-6" style="display:inline-block">Newsletter</span>
+    <h2 class="section-heading mb-4">NOVÁ EPIZODA<br><span class="text-gradient-gold">DO E-MAILU.</span></h2>
+    <p style="color:#C7CEDA;font-family:Inter,sans-serif;font-size:1.125rem;max-width:480px;margin:0 auto 40px;line-height:1.7">
+      Každý týden krátký e-mail — téma nové epizody, klíčové myšlenky a přímý odkaz. Žádný spam. Žádná sleva na matrace.
+    </p>
+
+    <div id="newsletter-form">
+      <form onsubmit="submitNewsletter(event)" class="flex flex-col sm:flex-row gap-3" style="max-width:520px;margin:0 auto">
+        <div class="flex-1" style="position:relative">
+          <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(199,206,218,0.5)" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+          <input type="email" id="email-input" placeholder="tvůj@email.cz" />
+          <p id="email-error" style="display:none;color:#f87171;font-size:0.75rem;font-family:Inter,sans-serif;position:absolute;bottom:-22px;left:0">Zadej prosím platný e-mail.</p>
+        </div>
+        <button type="submit" class="btn-primary" style="flex-shrink:0;justify-content:center;box-shadow:0 0 30px rgba(227,176,75,0.15)">
+          Přihlásit se →
+        </button>
+      </form>
+    </div>
+    <div id="newsletter-success" style="display:none;padding:24px 0">
+      <svg width="48" height="48" fill="none" stroke="#E3B04B" stroke-width="2" style="margin:0 auto 16px"><circle cx="12" cy="12" r="10"/><polyline points="9,12 11,14 15,10"/></svg>
+      <p style="font-family:Anton,sans-serif;font-size:1.5rem;color:white;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Výborně. Uvídíme se ve schránce.</p>
+    </div>
+
+    <p style="color:rgba(199,206,218,0.5);font-size:0.75rem;font-family:Inter,sans-serif;margin-top:32px">Odhlásit se můžeš kdykoliv jedním kliknutím. Žádné kecy.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer style="background:#040D1E;border-top:1px solid rgba(255,255,255,0.05)">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+      <div class="sm:col-span-2 md:col-span-1">
+        <svg viewBox="0 0 150 52" height="48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+          <rect x="43" y="10" width="98" height="30" rx="6" stroke="#E3B04B" stroke-width="1.5" fill="rgba(227,176,75,0.08)"/>
+          <rect x="16" y="4" width="12" height="20" rx="6" fill="white"/>
+          <path d="M11 20 C11 28 33 28 33 20" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <line x1="22" y1="27" x2="22" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="16" y1="34" x2="28" y2="34" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="33" cy="8" r="3.5" fill="#E3B04B"/>
+          <text x="48" y="35" font-family="Anton, Impact, sans-serif" font-size="26" letter-spacing="1" fill="white">DUO</text>
+          <text x="48" y="48" font-family="Inter, sans-serif" font-size="7" letter-spacing="2.5" fill="#C7CEDA" opacity="0.7">PODCAST</text>
+        </svg>
+        <p style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;line-height:1.6;max-width:240px">Hloubkové rozhovory o aktuálních tématech. Vojta a Vašek každý týden.</p>
+      </div>
+      <div>
+        <h4 style="color:white;font-family:Inter,sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-bottom:16px">Podcast</h4>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Epizody</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">O nás</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Kde poslouchat</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Newsletter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:white;font-family:Inter,sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-bottom:16px">Platformy</h4>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px">
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Spotify</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Apple Podcasts</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">YouTube</a></li>
+          <li><a href="#" style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;text-decoration:none" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">Pocket Casts</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:white;font-family:Inter,sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-bottom:16px">Sledovat</h4>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="#" style="display:flex;align-items:center;gap:10px;color:#C7CEDA;text-decoration:none;font-size:0.875rem;font-family:Inter,sans-serif;transition:color 0.2s" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:10px;color:#C7CEDA;text-decoration:none;font-size:0.875rem;font-family:Inter,sans-serif" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter / X
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:10px;color:#C7CEDA;text-decoration:none;font-size:0.875rem;font-family:Inter,sans-serif" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='#C7CEDA'">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+      <p style="color:rgba(199,206,218,0.5);font-size:0.75rem;font-family:Inter,sans-serif">© 2025 DUO Podcast. Vojta & Vašek. Všechna práva vyhrazena.</p>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="animate-pulse-dot" style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block"></span>
+        <span style="color:rgba(199,206,218,0.5);font-size:0.75rem;font-family:Inter,sans-serif">Nová epizoda každé pondělí</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Navbar scroll effect ──
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, { passive: true });
+
+// ── Scroll helper ──
+function scrollToSection(selector) {
+  const el = document.querySelector(selector);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Mobile menu ──
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
+  document.getElementById('icon-menu').style.display = menuOpen ? 'none' : 'block';
+  document.getElementById('icon-close').style.display = menuOpen ? 'block' : 'none';
+}
+
+// ── Episodes data ──
+const episodes = [
+  {
+    number: '042', hot: true,
+    title: 'AI vezme práci milionům. Co budeme dělat?',
+    description: 'Vašek věří, že AI otevře nové příležitosti, o kterých dnes nemáme tušení. Vojta má jiné čísla — a horší zprávy. Hodina argumentů, která nestárne.',
+    duration: '1:04:32', date: '17. 6. 2025',
+    tags: ['Technologie', 'Budoucnost práce'],
+    vojta: 'Masová nezaměstnanost je reálná hrozba.',
+    vasek: 'Každá revoluce vytvořila víc míst než zničila.',
+  },
+  {
+    number: '041', hot: false,
+    title: 'Vlastní bydlení je sen nebo past?',
+    description: 'Hypotéka na 30 let nebo svoboda nájemníka? Vojta spočítal, kolik tě vlastní byt doopravdy stojí. Vašek mu to vyvrátil — a pak zase ne.',
+    duration: '58:14', date: '10. 6. 2025',
+    tags: ['Finance', 'Nemovitosti'],
+    vojta: 'Byt jako investice je mýtus střední třídy.',
+    vasek: 'Bezpečí domova má hodnotu, která se nedá změřit.',
+  },
+  {
+    number: '040', hot: false,
+    title: 'Sociální sítě a mentální zdraví: kde je hranice?',
+    description: 'Scroll, lajky, FOMO. Vašek sám bojuje se závislostí a říká to nahlas. Vojta má data a jsou brutální.',
+    duration: '1:12:08', date: '3. 6. 2025',
+    tags: ['Psychologie', 'Technologie'],
+    vojta: 'Platformy jsou designovány jako sloty.',
+    vasek: 'Zodpovědnost je na nás, ne na firmách.',
+  },
+  {
+    number: '039', hot: false,
+    title: 'Česká politika: proč nás nudí a co s tím',
+    description: 'Nezajímáš se o politiku? Vojta říká, že tím dáváš hlas ostatním. Vašek to vidí jinak — nuda je racionální reakce na systém.',
+    duration: '1:08:55', date: '27. 5. 2025',
+    tags: ['Politika', 'Společnost'],
+    vojta: 'Apatie je luxus, který si nemůžeme dovolit.',
+    vasek: 'Systém záměrně navozuje apatii. Je to feature, ne bug.',
+  },
+];
+
+function renderEpisodes() {
+  const container = document.getElementById('episodes-list');
+  container.innerHTML = episodes.map((ep, i) => `
+    <article style="background:#07122A;border:1px solid ${ep.hot ? 'rgba(227,176,75,0.3)' : 'rgba(255,255,255,0.05)'};border-radius:16px;overflow:hidden;transition:all 0.3s;${ep.hot ? 'box-shadow:0 4px 30px rgba(227,176,75,0.08)' : ''}">
+      <div style="padding:24px 28px">
+        <div style="display:flex;align-items:flex-start;gap:20px">
+          <button class="play-btn" aria-label="Přehrát epizodu ${ep.number}">
+            <svg width="16" height="16" fill="#07122A" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          </button>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+              <span style="font-family:Anton,sans-serif;font-size:2.5rem;color:rgba(255,255,255,0.15);line-height:1">${ep.number}</span>
+              ${ep.hot ? '<span class="gold-badge" style="animation:pulse-dot 2s infinite">Nová epizoda</span>' : ''}
+            </div>
+            <h3 style="font-family:Anton,sans-serif;font-size:1.25rem;color:white;text-transform:uppercase;letter-spacing:0.05em;line-height:1.2;margin-bottom:8px">${ep.title}</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;align-items:center">
+              <span style="color:#C7CEDA;font-size:0.75rem;font-family:Inter,sans-serif">⏱ ${ep.duration}</span>
+              <span style="color:#C7CEDA;font-size:0.75rem;font-family:Inter,sans-serif">📅 ${ep.date}</span>
+              ${ep.tags.map(t => `<span style="font-size:0.7rem;font-family:Inter,sans-serif;color:rgba(199,206,218,0.7);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:2px 10px;border-radius:999px">${t}</span>`).join('')}
+            </div>
+            <p style="color:#C7CEDA;font-size:0.875rem;font-family:Inter,sans-serif;line-height:1.6;margin-bottom:16px">${ep.description}</p>
+            <button onclick="toggleStance(${i})" style="display:flex;align-items:center;gap:6px;color:rgba(227,176,75,0.7);font-size:0.75rem;font-family:Inter,sans-serif;font-weight:600;background:none;border:none;cursor:pointer;padding:0;transition:color 0.2s" onmouseover="this.style.color='#E3B04B'" onmouseout="this.style.color='rgba(227,176,75,0.7)'">
+              <span id="arrow-${i}" style="transition:transform 0.3s;display:inline-block">›</span>
+              <span id="stance-label-${i}">Postoje moderátorů</span>
+            </button>
+            <div id="stance-${i}" class="stance-panel" style="margin-top:0">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+                <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px">
+                  <div style="color:rgba(255,255,255,0.4);font-size:0.65rem;font-family:Inter,sans-serif;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Vojta · Skeptik</div>
+                  <p style="color:rgba(255,255,255,0.8);font-size:0.75rem;font-family:Inter,sans-serif;font-style:italic">„${ep.vojta}"</p>
+                </div>
+                <div style="background:rgba(227,176,75,0.05);border:1px solid rgba(227,176,75,0.15);border-radius:12px;padding:12px">
+                  <div style="color:rgba(227,176,75,0.6);font-size:0.65rem;font-family:Inter,sans-serif;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Vašek · Nadšenec</div>
+                  <p style="color:rgba(227,176,75,0.8);font-size:0.75rem;font-family:Inter,sans-serif;font-style:italic">„${ep.vasek}"</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function toggleStance(i) {
+  const panel = document.getElementById(`stance-${i}`);
+  const arrow = document.getElementById(`arrow-${i}`);
+  const label = document.getElementById(`stance-label-${i}`);
+  const isOpen = panel.classList.toggle('open');
+  arrow.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+  label.textContent = isOpen ? 'Skrýt postoje' : 'Postoje moderátorů';
+}
+
+// ── Newsletter ──
+function submitNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('email-input').value;
+  const errEl = document.getElementById('email-error');
+  if (!email.includes('@') || !email.includes('.')) {
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  document.getElementById('newsletter-form').style.display = 'none';
+  document.getElementById('newsletter-success').style.display = 'block';
+}
+
+// Init
+renderEpisodes();
+</script>
+</body>
+</html>
