@@ -1,14 +1,16 @@
 # Šablona: Follow-up e-mail
 
-**Předmět:** Re: [Vlny × {Firma}] Spolupráce na obsahu
+**Předmět:** Re: {Firma} × Vlny — nápad na spolupráci
 
 ---
 
 Dobrý den, {Jméno},
 
-posílám krátkou připomínku k předchozímu e-mailu — možná se ztratil v příchozí poště.
+vracím se k předchozímu e-mailu — možná se ztratil.
 
-Víme, že inbox je zahlcený, takže jen stručně: pokud téma nesedí nebo není správný čas, klidně napište — nebudeme dál obtěžovat. Pokud naopak zájem je, rád/a si najdu čas na krátký hovor.
+Jedna přímá otázka: dává vám smysl oslovovat lidi, kteří si aktivně vybírají obsah, nebo teď řešíte jiné priority?
+
+Pokud druhé, žádný problém — napište a neozveme se. Pokud první, stačí říct „ano" a domluvíme 20 minut.
 
 S pozdravem,
 {Odesílatel}

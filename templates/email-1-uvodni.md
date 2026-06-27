@@ -1,6 +1,6 @@
 # Šablona: Úvodní e-mail
 
-**Předmět:** [Vlny × {Firma}] Spolupráce na obsahu
+**Předmět:** {Firma} × Vlny — nápad na spolupráci
 
 ---
 
@@ -8,11 +8,13 @@ Dobrý den, {Jméno},
 
 {PERSONALIZAČNÍ VĚTA — ověřený háček o osobě nebo firmě}
 
-Píšu vám ze Studia89, které stojí za Vlnami — multiformátovou platformou s podcasty, dokumenty a živým obsahem. Naše vertikály pokrývají byznys, média, sport, kulturu i historii; tváře jako Pavel Novotný, Fridrichová nebo Matěj Hollan přitahují publikum, které aktivně vyhledává obsah, ne jen scrolluje.
+Píšu vám kvůli jedné konkrétní věci: vaše značka by se mohla dostat před lidi, kteří si aktivně vybírají, co sledují — ne algoritmus, co jim to podstrčí.
 
-Pro značky jako {Firma} nepřipravujeme bannery, ale nativní epizody a brandovaný obsah, který diváci a posluchači přijímají jako součást programu — ne jako reklamu.
+Stojím za Vlnami (Studio89 Mediaworks). Neprodáváme plochu na bannery — děláme brandované epizody a nativní obsah s tvářemi, kterým lidé věří: Pavel Novotný, Fridrichová, Matěj Hollan. Diváci to neberou jako reklamu, protože to reklama není — je to obsah, který si sami vybrali pustit.
 
-Mělo by smysl si o tom prohodit pár vět? Klidně i 20 minut na videocall.
+Vím, že 40 000 měsíčních diváků nezní jako масовка. Ale jsou to lidé, kteří dočtou článek do konce, doposlouchají podcast a pak si věc skutečně koupí. Na český trh je to jiný záběr než display.
+
+Hodí se vám krátký hovor — třeba 20 minut? Mám volno {DEN_1} dopoledne nebo {DEN_2} odpoledne.
 
 S pozdravem,
 {Odesílatel}
